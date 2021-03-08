@@ -1,6 +1,6 @@
 output vnets {
   depends_on = [azurerm_virtual_network_peering.peering]
-  value      = module.networking
+  value      = merge(module.networking, module.networking_datas)
   sensitive  = true
 }
 
@@ -31,6 +31,23 @@ module "networking" {
   ddos_id                           = try(azurerm_network_ddos_protection_plan.ddos_protection_plan[each.value.ddos_services_key].id, "")
   base_tags                         = try(local.global_settings.inherit_tags, false) ? module.resource_groups[each.value.resource_group_key].tags : {}
   network_watchers                  = try(local.combined_objects_network_watchers, null)
+}
+
+module "networking_datas" {
+  source   = "./modules/networking/virtual_network_data"
+  for_each = local.networking.vnet_datas
+
+  location                          = lookup(each.value, "region", null) == null ? module.resource_group_datas[each.value.resource_group_key].location : local.global_settings.regions[each.value.region]
+  resource_group_name               = module.resource_group_datas[each.value.resource_group_key].name
+  settings                          = each.value
+  network_security_group_definition = {}
+  route_tables                      = {}
+  tags                              = try(each.value.tags, null)
+  diagnostics                       = {}
+  global_settings                   = local.global_settings
+  ddos_id                           = ""
+  base_tags                         = try(local.global_settings.inherit_tags, false) ? module.resource_group_datas[each.value.resource_group_key].tags : {}
+  network_watchers                  = null
 }
 
 #

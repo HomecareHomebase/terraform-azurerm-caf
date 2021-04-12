@@ -19,6 +19,7 @@ resource "azurecaf_name" "account" {
   #TODO: need to be changed to appropriate resource (no caf reference for now)
   prefixes      = local.global_settings.prefixes
   random_length = local.global_settings.random_length
+  suffixes      = local.global_settings.suffixes
   clean_input   = true
   passthrough   = local.global_settings.passthrough
   use_slug      = local.global_settings.use_slug
@@ -57,13 +58,13 @@ resource "random_password" "pwd" {
 
 
 resource "azurerm_key_vault_secret" "aad_user_name" {
-  name         = format("%s%s-name", local.secret_prefix, local.user_name)
+  name         = join("-", compact([local.secret_prefix, local.user_name, "name", local.secret_suffix]))
   value        = azuread_user.account.user_principal_name
   key_vault_id = local.keyvault_id
 }
 
 resource "azurerm_key_vault_secret" "aad_user_password" {
-  name            = format("%s%s-password", local.secret_prefix, local.user_name)
+  name            = join("-", compact([local.secret_prefix, local.user_name, "password", local.secret_suffix]))
   value           = random_password.pwd.result
   expiration_date = timeadd(time_rotating.pwd.id, format("%sh", local.password_policy.expire_in_days * 24))
   key_vault_id    = local.keyvault_id

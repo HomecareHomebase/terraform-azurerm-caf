@@ -5,4 +5,8 @@ variable "azuread_groups" {
 variable "azuread_apps" {
   default = {}
 }
-variable "settings" {}
+
+variable managed_identities {
+  default = {}
+}
+variable settings {}

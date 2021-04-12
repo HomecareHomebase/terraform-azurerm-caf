@@ -5,7 +5,9 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
     if var.diagnostics.diagnostics_definition != {} # Disable diagnostics when not enabled in the launchpad
   }
 
-  name               = try(format("%s%s", try(var.global_settings.prefix_with_hyphen, ""), each.value.name), format("%s%s", try(var.global_settings.prefix_with_hyphen, ""), var.diagnostics.diagnostics_definition[each.value.definition_key].name))
+  name               = try(format("%s%s%s", local.prefix, each.value.name, local.suffix), 
+                        try(format("%s%s%s", local.prefix, var.diagnostics.diagnostics_definition[each.value.definition_key].name, local.suffix),
+                          format("%s%s%s", local.prefix, "FAILED", local.suffix)))
   target_resource_id = var.resource_id
 
   eventhub_name                  = each.value.destination_type == "event_hub" ? try(var.diagnostics.event_hub_namespaces[var.diagnostics.diagnostics_destinations.event_hub_namespaces[each.value.destination_key].event_hub_namespace_key].name, null) : null
@@ -47,4 +49,11 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
       }
     }
   }
+}
+
+locals {
+  prefix = try(var.global_settings.prefix_with_hyphen, "") == null ? "" : try(var.global_settings.prefix_with_hyphen, "")
+  suffix = try(var.global_settings.suffix_with_hyphen, "") == null ? "" : try(var.global_settings.suffix_with_hyphen, "")
+
+
 }

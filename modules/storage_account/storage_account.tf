@@ -8,6 +8,7 @@ resource "azurecaf_name" "stg" {
   name          = var.storage_account.name
   resource_type = "azurerm_storage_account"
   prefixes      = var.global_settings.prefixes
+  suffixes      = var.global_settings.suffixes  
   random_length = var.global_settings.random_length
   clean_input   = true
   passthrough   = var.global_settings.passthrough
@@ -163,4 +164,18 @@ module "data_lake_filesystem" {
 
   storage_account_id = azurerm_storage_account.stg.id
   settings           = each.value
+}
+
+
+resource "azurerm_resource_group_template_deployment" "blob_versioning" {
+    
+    name                     = "${azurerm_storage_account.stg.name}-blob_versioning"
+    resource_group_name      = azurerm_storage_account.stg.resource_group_name
+    deployment_mode          = "Incremental"
+    parameters_content                = jsonencode({
+        "storageAccount"     = {value = azurerm_storage_account.stg.name}
+        "isVersioningEnabled" = {value = try(var.storage_account.enable_blob_versioning, false)}
+    })
+
+    template_content = file("${path.module}/enable_blob_versioning.json")
 }

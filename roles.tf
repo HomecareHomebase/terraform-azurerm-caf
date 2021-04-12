@@ -7,6 +7,10 @@ module "custom_roles" {
   custom_role          = each.value
 }
 
+output custom_role_definitions {
+  value = module.custom_roles
+}
+
 #
 # Roles assignments
 #
@@ -106,6 +110,10 @@ locals {
     ) : format("%s_%s_%s", mapping.scope_key_resource, replace(mapping.role_definition_name, " ", "_"), mapping.object_id_key_resource) => mapping
   }
 
+}
+
+output roles_to_process {
+  value = local.roles_to_process
 }
 
 # The code transform this input format to

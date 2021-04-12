@@ -3,6 +3,7 @@ module "azurerm_application_insights" {
   for_each = local.webapp.azurerm_application_insights
 
   prefix                                = local.global_settings.prefix
+  suffix                                = local.global_settings.suffix
   tags                                  = lookup(each.value, "tags", null)
   resource_group_name                   = module.resource_groups[each.value.resource_group_key].name
   location                              = lookup(each.value, "region", null) == null ? module.resource_groups[each.value.resource_group_key].location : local.global_settings.regions[each.value.region]

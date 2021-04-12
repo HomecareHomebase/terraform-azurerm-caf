@@ -1,6 +1,22 @@
 resource "random_string" "prefix" {
-  count   = try(var.global_settings.prefix, null) == null ? 1 : 0
+  count = 1 # try(var.global_settings.prefix, null) == null ? 1 : 0
   length  = 4
+  special = false
+  upper   = false
+  number  = false
+}
+
+resource "random_string" "suffix" {
+  count = 1
+  length  = 4
+  special = false
+  upper   = false
+  number  = false
+}
+
+resource "random_string" "alpha1" {
+  count = 1 # try(var.global_settings.prefix, null) == null ? 1 : 0
+  length  = 1
   special = false
   upper   = false
   number  = false
@@ -22,10 +38,12 @@ locals {
     aks_clusters               = try(var.compute.aks_clusters, {})
     availability_sets          = try(var.compute.availability_sets, {})
     azure_container_registries = try(var.compute.azure_container_registries, {})
+    azure_container_registry_datas = try(var.compute.azure_container_registry_datas, {})
     bastion_hosts              = try(var.compute.bastion_hosts, {})
     container_groups           = try(var.compute.container_groups, {})
     proximity_placement_groups = try(var.compute.proximity_placement_groups, {})
     virtual_machines           = try(var.compute.virtual_machines, {})
+    scale_sets                 = try(var.compute.scale_sets, {})
   }
 
   database = {
@@ -159,6 +177,7 @@ locals {
     virtual_wans                                            = try(var.networking.virtual_wans, {})
     vnet_peerings                                           = try(var.networking.vnet_peerings, {})
     vnets                                                   = try(var.networking.vnets, {})
+    vnet_datas                                              = try(var.networking.vnet_datas, {})
   }
 
   object_id = coalesce(var.logged_user_objectId, var.logged_aad_app_objectId, try(data.azurerm_client_config.current.object_id, null), try(data.azuread_service_principal.logged_in_app.0.object_id, null))

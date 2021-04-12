@@ -1,5 +1,6 @@
 resource "azuread_application" "app" {
 
+  # TODO - TRIPPLE CHECK
   display_name = var.global_settings.passthrough ? format("%s", var.settings.application_name) : format("%v-%s", try(var.global_settings.prefixes, ""), var.settings.application_name)
 
   owners = [

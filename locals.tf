@@ -118,7 +118,7 @@ locals {
       prefixes           = try(var.global_settings.prefix, null) == "" ? null : try([var.global_settings.prefix], try(var.global_settings.prefixes, [random_string.prefix.0.result]))
       suffix             = try(var.global_settings.suffix, null)
       suffix_with_hyphen = try(var.global_settings.suffix_with_hyphen, format("-%s", try(var.global_settings.suffix, try(var.global_settings.suffixes[0], random_string.suffix.0.result))))
-      sufixes           = try(var.global_settings.suffix, null) == "" ? null : try([var.global_settings.suffix], try(var.global_settings.suffixes, [random_string.suffix.0.result]))
+      suffixes           = try(var.global_settings.suffix, null) == "" ? null : try([var.global_settings.suffix], try(var.global_settings.suffixes, [random_string.suffix.0.result]))
       random_length      = try(var.global_settings.random_length, 0)
       regions            = var.global_settings.regions
       tags               = try(var.global_settings.tags, null)

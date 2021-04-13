@@ -10,8 +10,8 @@ resource "azurecaf_name" "linux" {
 
   name          = each.value.name
   resource_type = "azurerm_linux_virtual_machine_scale_set"
-  prefixes      = var.global_settings.prefix
-  suffixes      = var.global_settings.suffix
+  prefixes      = var.global_settings.prefixes
+  suffixes      = var.global_settings.suffixes
   random_length = var.global_settings.random_length
   clean_input   = true
   passthrough   = var.global_settings.passthrough
@@ -23,8 +23,8 @@ resource "azurecaf_name" "linux_nic" {
 
   name          = each.value.name
   resource_type = "azurerm_network_interface"
-  prefixes      = var.global_settings.prefix
-  suffixes      = var.global_settings.suffix
+  prefixes      = var.global_settings.prefixes
+  suffixes      = var.global_settings.suffixes
   random_length = var.global_settings.random_length
   clean_input   = true
   passthrough   = var.global_settings.passthrough

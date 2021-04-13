@@ -1,5 +1,5 @@
 resource "random_string" "prefix" {
-  count = 1 # try(var.global_settings.prefix, null) == null ? 1 : 0
+  count   = try(var.global_settings.prefix, null) == null ? 1 : 0
   length  = 4
   special = false
   upper   = false
@@ -7,16 +7,8 @@ resource "random_string" "prefix" {
 }
 
 resource "random_string" "suffix" {
-  count = 1
+  count   = try(var.global_settings.suffix, null) == null ? 1 : 0
   length  = 4
-  special = false
-  upper   = false
-  number  = false
-}
-
-resource "random_string" "alpha1" {
-  count = 1 # try(var.global_settings.prefix, null) == null ? 1 : 0
-  length  = 1
   special = false
   upper   = false
   number  = false
@@ -124,6 +116,9 @@ locals {
       # prefixes           = var.global_settings.prefix == "" ? null : try(var.global_settings.prefixes, [random_string.prefix.0.result])
       prefix_with_hyphen = try(var.global_settings.prefix_with_hyphen, format("%s-", try(var.global_settings.prefix, try(var.global_settings.prefixes[0], random_string.prefix.0.result))))
       prefixes           = try(var.global_settings.prefix, null) == "" ? null : try([var.global_settings.prefix], try(var.global_settings.prefixes, [random_string.prefix.0.result]))
+      suffix             = try(var.global_settings.suffix, null)
+      suffix_with_hyphen = try(var.global_settings.suffix_with_hyphen, format("-%s", try(var.global_settings.suffix, try(var.global_settings.suffixes[0], random_string.suffix.0.result))))
+      sufixes           = try(var.global_settings.suffix, null) == "" ? null : try([var.global_settings.suffix], try(var.global_settings.suffixes, [random_string.suffix.0.result]))
       random_length      = try(var.global_settings.random_length, 0)
       regions            = var.global_settings.regions
       tags               = try(var.global_settings.tags, null)

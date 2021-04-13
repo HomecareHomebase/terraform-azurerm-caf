@@ -1,6 +1,7 @@
 locals {
   global_settings = {
     prefixes      = lookup(var.settings, "useprefix", null) == true ? try(var.settings.global_settings.prefixes, var.global_settings.prefixes) : []
+    suffixes      = lookup(var.settings, "usesuffix", null) == true ? try(var.settings.global_settings.suffixes, var.global_settings.suffixes) : []
     random_length = try(var.settings.global_settings.random_length, var.global_settings.random_length)
     passthrough   = try(var.settings.global_settings.passthrough, var.global_settings.passthrough)
     use_slug      = try(var.settings.global_settings.use_slug, var.global_settings.use_slug)
@@ -11,6 +12,7 @@ locals {
   tenant_name     = lookup(var.settings, "tenant_name", data.azuread_domains.aad_domains.domains[0].domain_name)
   keyvault_id     = var.keyvaults[var.client_config.landingzone_key][var.settings.keyvault_key].id
   secret_prefix   = lookup(var.settings, "secret_prefix", "")
+  secret_suffix   = lookup(var.settings, "secret_suffix", "")
 }
 
 resource "azurecaf_name" "account" {
@@ -18,8 +20,8 @@ resource "azurecaf_name" "account" {
   resource_type = "azurerm_resource_group"
   #TODO: need to be changed to appropriate resource (no caf reference for now)
   prefixes      = local.global_settings.prefixes
-  random_length = local.global_settings.random_length
   suffixes      = local.global_settings.suffixes
+  random_length = local.global_settings.random_length
   clean_input   = true
   passthrough   = local.global_settings.passthrough
   use_slug      = local.global_settings.use_slug

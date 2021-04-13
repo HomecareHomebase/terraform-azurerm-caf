@@ -1,6 +1,6 @@
 resource "azuread_application" "app" {
 
-  display_name = var.global_settings.passthrough ? format("%s", var.settings.application_name) : join("-", compact([try(var.global_settings.prefix.0, ""), var.settings.application_name, try(var.global_settings.suffix.0, "")]))
+  display_name = var.global_settings.passthrough ? format("%s", var.settings.application_name) : join("-", compact(concat(var.global_settings.prefixes == null ? [] : var.global_settings.prefixes, [var.settings.application_name], var.global_settings.suffixes == null ? [] : var.global_settings.suffixes)))
   owners = [
     var.client_config.object_id
   ]

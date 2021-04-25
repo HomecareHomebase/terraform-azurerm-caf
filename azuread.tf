@@ -49,10 +49,6 @@ module "azuread_groups_members" {
   managed_identities = module.managed_identities
 }
 
-output debug_azuread_groups_members_local_managed_identities_to_process {
-  value = module.azuread_groups_members
-}
-
 #
 # Azure Active Directory Users
 #

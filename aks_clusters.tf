@@ -20,14 +20,3 @@ module "aks_clusters" {
   ])
   user_assigned_identity_id = try(local.combined_objects_managed_identities[each.value.user_assigned_identity_lz_key][each.value.user_assigned_identity_managed_identity_key].id, null)
 }
-
-output "debug_combined_objects_managed_identities" {
-  value = local.combined_objects_managed_identities
-}
-
-output "debug_idents" {
-  value = [
-    for cluster in local.compute.aks_clusters:
-      try(local.combined_objects_managed_identities[cluster.value.user_assigned_identity_lz_key][cluster.value.user_assigned_identity_managed_identity_key], {})
-  ]
-}

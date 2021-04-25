@@ -35,7 +35,3 @@ output azure_container_registries {
   value = merge(module.container_registry, module.container_registry_data)
 
 }
-
-output debug_combined_objects_azure_container_registries {
-  value = local.combined_objects_azure_container_registries 
-}

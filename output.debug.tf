@@ -1,6 +1,7 @@
 output debug {
     value = tomap({
         "local_services_roles" = try(local.services_roles, {}),
+        "local_combined_objects_managed_identities" = try(local.combined_objects_managed_identities, {})
         # "custom_role_definitions" = module.custom_roles,
         # "roles_to_process" = local.roles_to_process,
         # "combined_objects_managed_identities" = local.combined_objects_managed_identities

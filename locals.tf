@@ -26,15 +26,15 @@ locals {
   } : map(var.client_config)
 
   compute = {
-    aks_clusters               = try(var.compute.aks_clusters, {})
-    availability_sets          = try(var.compute.availability_sets, {})
-    azure_container_registries = try(var.compute.azure_container_registries, {})
+    aks_clusters                   = try(var.compute.aks_clusters, {})
+    availability_sets              = try(var.compute.availability_sets, {})
+    azure_container_registries     = try(var.compute.azure_container_registries, {})
     azure_container_registry_datas = try(var.compute.azure_container_registry_datas, {})
-    bastion_hosts              = try(var.compute.bastion_hosts, {})
-    container_groups           = try(var.compute.container_groups, {})
-    proximity_placement_groups = try(var.compute.proximity_placement_groups, {})
-    virtual_machines           = try(var.compute.virtual_machines, {})
-    scale_sets                 = try(var.compute.scale_sets, {})
+    bastion_hosts                  = try(var.compute.bastion_hosts, {})
+    container_groups               = try(var.compute.container_groups, {})
+    proximity_placement_groups     = try(var.compute.proximity_placement_groups, {})
+    virtual_machines               = try(var.compute.virtual_machines, {})
+    scale_sets                     = try(var.compute.scale_sets, {})
   }
 
   database = {

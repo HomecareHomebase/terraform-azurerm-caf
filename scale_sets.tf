@@ -1,6 +1,6 @@
 
 
-module scale_sets {
+module "scale_sets" {
   source = "./modules/compute/scale_set"
   depends_on = [
     module.dynamic_keyvault_secrets,
@@ -28,7 +28,7 @@ module scale_sets {
 }
 
 
-output scale_sets {
+output "scale_sets" {
   value = module.scale_sets
 
 }

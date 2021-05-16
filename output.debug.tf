@@ -16,14 +16,14 @@
 #     sensitive = true
 # }
 
-output debug_local_services_roles {
-    value = local.services_roles
-    sensitive = true
+output "debug_local_services_roles" {
+  value     = local.services_roles
+  sensitive = true
 }
 
-output debug_local_combined_objects_managed_identities {
-    value = local.combined_objects_managed_identities
-    sensitive = true
+output "debug_local_combined_objects_managed_identities" {
+  value     = local.combined_objects_managed_identities
+  sensitive = true
 }
 
 # output debug_local_services_roles {
@@ -55,5 +55,5 @@ output debug_local_combined_objects_managed_identities {
 # }
 
 # output debug_combined_objects_azure_container_registries {
-#   value = local.combined_objects_azure_container_registries 
+#   value = local.combined_objects_azure_container_registries
 # }

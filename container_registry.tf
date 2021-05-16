@@ -21,17 +21,17 @@ module "container_registry" {
   private_dns              = local.combined_objects_private_dns
 }
 
-module container_registry_data {
+module "container_registry_data" {
   source   = "./modules/compute/container_registry_data"
   for_each = local.compute.azure_container_registry_datas
 
-  global_settings          = local.global_settings
-  client_config            = local.client_config
-  name                     = each.value.name
-  resource_group_name      = module.resource_group_datas[each.value.resource_group_key].name
+  global_settings     = local.global_settings
+  client_config       = local.client_config
+  name                = each.value.name
+  resource_group_name = local.resource_groups[each.value.resource_group_key].name
 }
 
-output azure_container_registries {
+output "azure_container_registries" {
   value = merge(module.container_registry, module.container_registry_data)
 
 }

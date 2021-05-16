@@ -39,8 +39,8 @@ module "networking_datas" {
   source   = "./modules/networking/virtual_network_data"
   for_each = local.networking.vnet_datas
 
-  location                          = lookup(each.value, "region", null) == null ? module.resource_group_datas[each.value.resource_group_key].location : local.global_settings.regions[each.value.region]
-  resource_group_name               = module.resource_group_datas[each.value.resource_group_key].name
+  location                          = lookup(each.value, "region", null) == null ? local.resource_groups[each.value.resource_group_key].location : local.global_settings.regions[each.value.region]
+  resource_group_name               = local.resource_groups[each.value.resource_group_key].name
   settings                          = each.value
   network_security_group_definition = {}
   route_tables                      = {}
@@ -48,7 +48,7 @@ module "networking_datas" {
   diagnostics                       = {}
   global_settings                   = local.global_settings
   ddos_id                           = ""
-  base_tags                         = try(local.global_settings.inherit_tags, false) ? module.resource_group_datas[each.value.resource_group_key].tags : {}
+  base_tags                         = try(local.global_settings.inherit_tags, false) ? local.resource_groups[each.value.resource_group_key].tags : {}
   network_watchers                  = null
 }
 

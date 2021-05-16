@@ -26,7 +26,10 @@ output "keyvaults" {
   value = {
     for key, value in try(var.settings.keyvaults, {}) : key => {
       id                        = azurerm_key_vault_secret.client_id[key].key_vault_id
-      secret_name_client_secret = value.secret_prefix
+      // TODO: BLOCKING Figure out how to support suffix
+      secret_name_client_secret = try(value.secret_prefix, null)
+      secret_name_client_secret_prefix = try(value.secret_prefix, null)
+      secret_name_client_secret_suffix = try(value.secret_suffix, null)
     }
   }
 }

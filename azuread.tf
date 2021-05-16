@@ -46,6 +46,7 @@ module "azuread_groups_members" {
   azuread_groups = module.azuread_groups
   group_id       = module.azuread_groups[each.key].id
   azuread_apps   = module.azuread_applications
+  managed_identities = module.managed_identities
 }
 
 #

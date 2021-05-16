@@ -6,6 +6,14 @@ resource "random_string" "prefix" {
   number  = false
 }
 
+resource "random_string" "suffix" {
+  count   = try(var.global_settings.suffix, null) == null ? 1 : 0
+  length  = 4
+  special = false
+  upper   = false
+  number  = false
+}
+
 locals {
   client_config = var.client_config == {} ? {
     client_id               = data.azurerm_client_config.current.client_id
@@ -21,10 +29,12 @@ locals {
     aks_clusters               = try(var.compute.aks_clusters, {})
     availability_sets          = try(var.compute.availability_sets, {})
     azure_container_registries = try(var.compute.azure_container_registries, {})
+    azure_container_registry_datas = try(var.compute.azure_container_registry_datas, {})
     bastion_hosts              = try(var.compute.bastion_hosts, {})
     container_groups           = try(var.compute.container_groups, {})
     proximity_placement_groups = try(var.compute.proximity_placement_groups, {})
     virtual_machines           = try(var.compute.virtual_machines, {})
+    scale_sets                 = try(var.compute.scale_sets, {})
   }
 
   database = {
@@ -111,7 +121,11 @@ locals {
     regions            = var.global_settings.regions
     tags               = try(var.global_settings.tags, null)
     use_slug           = try(var.global_settings.use_slug, true)
+    suffix             = try(var.global_settings.suffix, null)
+    suffix_with_hyphen = try(var.global_settings.suffix_with_hyphen, format("-%s", try(var.global_settings.suffix, try(var.global_settings.suffixes[0], random_string.suffix.0.result))))
+    suffixes           = try(var.global_settings.suffix, null) == "" ? null : try([var.global_settings.suffix], try(var.global_settings.suffixes, [random_string.suffix.0.result]))
   }, var.global_settings)
+
 
   logic_app = {
     integration_service_environment = try(var.logic_app.integration_service_environment, {})
@@ -161,6 +175,7 @@ locals {
     virtual_wans                                            = try(var.networking.virtual_wans, {})
     vnet_peerings                                           = try(var.networking.vnet_peerings, {})
     vnets                                                   = try(var.networking.vnets, {})
+    vnet_datas                                              = try(var.networking.vnet_datas, {})
   }
 
   object_id = coalesce(var.logged_user_objectId, var.logged_aad_app_objectId, try(data.azurerm_client_config.current.object_id, null), try(data.azuread_service_principal.logged_in_app.0.object_id, null))

@@ -57,7 +57,7 @@ module managed_identity_keys {
   for_each = toset(try(var.settings.members.managed_identity_keys, []))
 
   group_object_id  = var.group_id
-  member_object_id = var.managed_identities[each.key].id
+  member_object_id = var.managed_identities[each.key].principal_id
 }
 
 # locals {

@@ -6,10 +6,10 @@ module "azuread_apps" {
     if try(access_policy.azuread_app_key, null) != null
   }
 
-  keyvault_id   = var.keyvault_id == null ? var.keyvaults[try(try(each.value.keyvault_lz_key, each.value.lz_key),var.client_config.landingzone_key)][var.keyvault_key].id : var.keyvault_id
+  keyvault_id   = var.keyvault_id == null ? var.keyvaults[try(try(each.value.keyvault_lz_key, each.value.lz_key), var.client_config.landingzone_key)][var.keyvault_key].id : var.keyvault_id
   access_policy = each.value
   tenant_id     = var.client_config.tenant_id
-  object_id     = var.azuread_apps[try(try(each.value.azuread_app_lz_key, each.value.lz_key),var.client_config.landingzone_key)][each.value.azuread_app_key].azuread_service_principal.object_id
+  object_id     = var.azuread_apps[try(try(each.value.azuread_app_lz_key, each.value.lz_key), var.client_config.landingzone_key)][each.value.azuread_app_key].azuread_service_principal.object_id
 }
 
 module "azuread_group" {
@@ -129,4 +129,17 @@ module "diagnostic_storage_accounts" {
   access_policy = each.value
   tenant_id     = var.resources.diagnostic_storage_accounts[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.diagnostic_storage_account_key].identity.0.tenant_id
   object_id     = var.resources.diagnostic_storage_accounts[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.diagnostic_storage_account_key].identity.0.principal_id
+}
+
+module "aks_clusters" {
+  source = "./access_policy"
+  for_each = {
+    for key, access_policy in var.access_policies : key => access_policy
+    if try(access_policy.aks_cluster_key, null) != null
+  }
+
+  keyvault_id   = var.keyvault_id == null ? try(var.keyvaults[var.client_config.landingzone_key][var.keyvault_key].id, var.keyvaults[each.value.lz_key][var.keyvault_key].id) : var.keyvault_id
+  access_policy = each.value
+  tenant_id     = var.client_config.tenant_id
+  object_id     = var.resources.aks_clusters[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.aks_cluster_key].rbac_id
 }

@@ -131,7 +131,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scale_set" {
 
   lifecycle {
     # REFACTOR - Make this configurable
-    ignore_changes = [instances]
+    ignore_changes = [instances, extension, tags]
   }
 }
 

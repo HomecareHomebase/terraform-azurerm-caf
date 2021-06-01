@@ -53,6 +53,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scale_set" {
     }
   }
 
+  upgrade_mode                    = try(each.value.upgrade_mode, null)
   computer_name_prefix            = try(each.value.computer_name_prefix, null)
   eviction_policy                 = try(each.value.eviction_policy, null)
   max_bid_price                   = try(each.value.max_bid_price, null)
@@ -129,6 +130,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scale_set" {
   }
 
   lifecycle {
+    # REFACTOR - Make this configurable
     ignore_changes = [instances]
   }
 }

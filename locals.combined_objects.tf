@@ -49,4 +49,7 @@ locals {
   combined_objects_virtual_hub_connections           = merge(tomap({ (local.client_config.landingzone_key) = azurerm_virtual_hub_connection.vhub_connection }), try(var.remote_objects.vhub_peerings, {}), try(var.remote_objects.virtual_hub_connections, {}))
   combined_objects_virtual_hub_route_tables          = merge(tomap({ (local.client_config.landingzone_key) = azurerm_virtual_hub_route_table.route_table }), try(var.remote_objects.virtual_hub_route_tables, {}))
   combined_objects_virtual_wans                      = merge(tomap({ (local.client_config.landingzone_key) = module.virtual_wans }), try(var.remote_objects.virtual_wans, {}))
+
+
+  combined_objects_scale_sets        = merge(tomap({ (local.client_config.landingzone_key) = module.scale_sets }), try(var.remote_objects.scale_sets, {}))
 }

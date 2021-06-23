@@ -8,7 +8,10 @@ variable "location" {
   description = "(Required) Specifies the supported Azure location where to create the resource. Changing this forces a new resource to be created."
   type        = string
 }
-
+variable "application_security_groups" {}
+variable "application_gateways" {
+  default = {}
+}
 variable "resource_group_name" {
   description = "Name of the existing resource group to deploy the virtual machine"
 }
@@ -58,5 +61,19 @@ variable "base_tags" {
 }
 
 variable "proximity_placement_groups" {
+  default = {}
+}
+
+variable "network_security_groups" {
+  default     = {}
+  description = "Require a version 1 NSG definition to be attached to a nic."
+}
+
+variable "custom_image_ids" {
+  default = {}
+}
+variable "disk_encryption_sets" {}
+
+variable "load_balancers" {
   default = {}
 }

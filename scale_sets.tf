@@ -10,8 +10,7 @@ module scale_sets {
     module.proximity_placement_groups,
     # module.load_balancers,
     # module.application_gateways,
-    module.application_security_groups,
-    module.diagnostic_storage_accounts
+    module.application_security_groups
   ]
   for_each = local.compute.scale_sets
 

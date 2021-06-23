@@ -222,6 +222,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     }
   }
 
+  lifecycle {
+    # REFACTOR - Make this configurable
+    ignore_changes = [instances, extension, tags]
+  }
 
 }
 

@@ -81,6 +81,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   upgrade_mode                    = try(each.value.upgrade_mode, null)
   zone_balance                    = try(each.value.zone_balance, null)
   zones                           = try(each.value.zones, null)
+  overprovision                   = try(each.value.overprovision, null)
 
   dynamic "admin_ssh_key" {
     for_each = lookup(each.value, "disable_password_authentication", true) == true ? [1] : []
@@ -119,6 +120,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     disk_size_gb              = try(each.value.os_disk.disk_size_gb, null)
     storage_account_type      = try(each.value.os_disk.storage_account_type, null)
     write_accelerator_enabled = try(each.value.os_disk.write_accelerator_enabled, false)
+    
+    dynamic "diff_disk_settings" {
+      for_each = try(each.value.os_disk.diff_disk_settings, null) == null ? [] : [1]
+      content {
+        option = each.value.os_disk.diff_disk_settings.option
+      }
+    }
   }
 
   dynamic "data_disk" {

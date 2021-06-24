@@ -15,3 +15,6 @@ variable "base_tags" {
 variable "diagnostic_profiles" {
   default = null
 }
+variable user_assigned_identity_id {
+  default = null
+}

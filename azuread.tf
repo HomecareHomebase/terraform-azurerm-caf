@@ -63,8 +63,8 @@ module "azuread_groups_members" {
   for_each = var.azuread_groups
 
   settings           = each.value
-  azuread_groups     = module.azuread_groups
-  group_id           = module.azuread_groups[each.key].id
+  azuread_groups     = local.azuread_groups
+  group_id           = local.azuread_groups[each.key].id
   azuread_apps       = module.azuread_applications
   managed_identities = module.managed_identities
 }

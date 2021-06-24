@@ -11,7 +11,7 @@ locals {
   combined_objects_availability_sets                 = merge(tomap({ (local.client_config.landingzone_key) = module.availability_sets }), try(var.remote_objects.availability_sets, {}))
   combined_objects_azure_container_registries        = merge(tomap({ (local.client_config.landingzone_key) = merge(module.container_registry, module.container_registry_data) }), try(var.remote_objects.container_registry, {}))
   combined_objects_azuread_applications              = merge(tomap({ (local.client_config.landingzone_key) = module.azuread_applications }), try(var.remote_objects.azuread_applications, {}))
-  combined_objects_azuread_groups                    = merge(tomap({ (local.client_config.landingzone_key) = module.azuread_groups }), try(var.remote_objects.azuread_groups, {}))
+  combined_objects_azuread_groups                    = merge(tomap({ (local.client_config.landingzone_key) = local.azuread_groups }), try(var.remote_objects.azuread_groups, {}))
   combined_objects_azuread_users                     = merge(tomap({ (local.client_config.landingzone_key) = module.azuread_users }), try(var.remote_objects.azuread_users, {}))
   combined_objects_azurerm_firewalls                 = merge(tomap({ (local.client_config.landingzone_key) = module.azurerm_firewalls }), try(var.remote_objects.azurerm_firewalls, {}))
   combined_objects_diagnostic_storage_accounts       = merge(tomap({ (local.client_config.landingzone_key) = module.diagnostic_storage_accounts }), try(var.remote_objects.diagnostic_storage_accounts, {}))

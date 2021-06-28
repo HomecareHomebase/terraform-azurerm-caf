@@ -1,6 +1,7 @@
 locals {
   global_settings = {
     prefixes      = lookup(var.settings, "useprefix", null) == true ? try(var.settings.global_settings.prefixes, var.global_settings.prefixes) : []
+    suffixes      = lookup(var.settings, "usesuffix", null) == true ? try(var.settings.global_settings.suffixes, var.global_settings.suffixes) : []
     random_length = try(var.settings.global_settings.random_length, var.global_settings.random_length)
     passthrough   = try(var.settings.global_settings.passthrough, var.global_settings.passthrough)
     use_slug      = try(var.settings.global_settings.use_slug, var.global_settings.use_slug)
@@ -11,6 +12,7 @@ locals {
   tenant_name     = lookup(var.settings, "tenant_name", data.azuread_domains.aad_domains.domains[0].domain_name)
   keyvault_id     = var.keyvaults[var.client_config.landingzone_key][var.settings.keyvault_key].id
   secret_prefix   = lookup(var.settings, "secret_prefix", "")
+  secret_suffix   = lookup(var.settings, "secret_suffix", "")
 }
 
 resource "azurecaf_name" "account" {
@@ -18,6 +20,7 @@ resource "azurecaf_name" "account" {
   resource_type = "azurerm_resource_group"
   #TODO: need to be changed to appropriate resource (no caf reference for now)
   prefixes      = local.global_settings.prefixes
+  suffixes      = local.global_settings.suffixes
   random_length = local.global_settings.random_length
   clean_input   = true
   passthrough   = local.global_settings.passthrough
@@ -57,13 +60,13 @@ resource "random_password" "pwd" {
 
 
 resource "azurerm_key_vault_secret" "aad_user_name" {
-  name         = format("%s%s-name", local.secret_prefix, local.user_name)
+  name         = join("-", compact([local.secret_prefix, local.user_name, "name", local.secret_suffix]))
   value        = azuread_user.account.user_principal_name
   key_vault_id = local.keyvault_id
 }
 
 resource "azurerm_key_vault_secret" "aad_user_password" {
-  name            = format("%s%s-password", local.secret_prefix, local.user_name)
+  name            = join("-", compact([local.secret_prefix, local.user_name, "password", local.secret_suffix]))
   value           = random_password.pwd.result
   expiration_date = timeadd(time_rotating.pwd.id, format("%sh", local.password_policy.expire_in_days * 24))
   key_vault_id    = local.keyvault_id

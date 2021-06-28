@@ -78,6 +78,11 @@ variable "resource_groups" {
   default     = {}
 }
 
+variable "resource_group_datas" {
+  description = "Resource groups configuration objects"
+  default     = {}
+}
+
 variable "subscriptions" {
   default = {}
 }

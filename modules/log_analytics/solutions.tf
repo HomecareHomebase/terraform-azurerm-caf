@@ -12,4 +12,6 @@ resource "azurerm_log_analytics_solution" "solution" {
     product        = lookup(each.value, "product")
     promotion_code = lookup(each.value, "promotion_code", null)
   }
+
+  tags                = local.tags
 }

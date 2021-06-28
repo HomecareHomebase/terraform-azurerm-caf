@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccount": {
+            "type": "String",
+            "metadata": {
+                "description": "Storage Account Name"}
+        },
+        "isVersioningEnabled": {
+            "type": "Bool",
+            "metadata": {
+                "description": "Versioning is enabled if set to true."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(parameters('storageAccount'), '/default')]",
+            "properties": {
+                "isVersioningEnabled": "[parameters('isVersioningEnabled')]"
+            }
+        }
+    ]
+}

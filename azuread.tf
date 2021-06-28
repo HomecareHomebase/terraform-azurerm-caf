@@ -26,15 +26,35 @@ output "aad_apps" {
 
 module "azuread_groups" {
   source   = "./modules/azuread/groups"
-  for_each = var.azuread_groups
+  # for_each = var.azuread_groups
+  for_each = {
+    for key, value in try(var.azuread_groups, {}) : key => value
+    if try(value.reuse, false) == false
+  }
 
   global_settings = local.global_settings
   azuread_groups  = each.value
   tenant_id       = local.client_config.tenant_id
 }
 
+module "azuread_groups_reused" {
+  depends_on = [module.azuread_groups]
+  source   = "./modules/azuread/groups_reused"
+  for_each = {
+    for key, value in try(var.azuread_groups, {}) : key => value
+    if try(value.reuse, false) == true
+  }
+
+  azuread_groups  = each.value
+  tenant_id       = local.client_config.tenant_id
+}
+
+locals {
+  azuread_groups = merge(module.azuread_groups, module.azuread_groups_reused)
+}
+
 output "azuread_groups" {
-  value = module.azuread_groups
+  value = local.azuread_groups
 
 }
 
@@ -42,10 +62,11 @@ module "azuread_groups_members" {
   source   = "./modules/azuread/groups_members"
   for_each = var.azuread_groups
 
-  settings       = each.value
-  azuread_groups = module.azuread_groups
-  group_id       = module.azuread_groups[each.key].id
-  azuread_apps   = module.azuread_applications
+  settings           = each.value
+  azuread_groups     = local.azuread_groups
+  group_id           = local.azuread_groups[each.key].id
+  azuread_apps       = module.azuread_applications
+  managed_identities = module.managed_identities
 }
 
 #

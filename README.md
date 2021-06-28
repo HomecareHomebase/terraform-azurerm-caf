@@ -1,5 +1,7 @@
 # Cloud Adoption Framework for Azure - Terraform module
 
+> Fork of [aztfmod/terraform-azurerm-caf](https://github.com/aztfmod/terraform-azurerm-caf) with additional features and capabilities that have yet to be merged into [aztfmod/terraform-azurerm-caf](https://github.com/aztfmod/terraform-azurerm-caf).
+
 Microsoft [Cloud Adoption Framework for Azure](https://aka.ms/caf) provides you with guidance and best practices to adopt Azure.
 
 This module allows you to create resources on Microsoft Azure, is used by the Cloud Adoption Framework for Azure (CAF) landing zones to provision resources in an Azure subscription and can deploy resources being directly invoked from the Terraform registry.
@@ -12,10 +14,11 @@ It can be invoked from the [Terraform registry](https://registry.terraform.io/mo
 
 ```terraform
 module "caf" {
-  source  = "aztfmod/caf/azurerm"
-  version = "~>5.1.0"
-  # insert the 7 required variables here
+  source  = "HomecareHomebase/caf/azurerm"
+  version = "5.3.11"
+  # insert the 6 required variables here
 }
+
 ```
 
 ## Prerequisites

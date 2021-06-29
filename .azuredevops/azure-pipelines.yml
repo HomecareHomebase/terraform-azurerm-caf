@@ -1,0 +1,35 @@
+trigger:
+  branches:
+    include:
+    - master
+    - release/v*
+  tags:
+    include:
+      - v*
+
+variables:
+- name: Home.Folder.User
+  value: vsts_azpcontainer
+- name: Rover.Image
+  value: aztfmod/rover:0.15.4-2105.2603
+
+resources:
+  containers:
+  - container: rover
+    image: $(Rover.Image)
+    options: --user 0:0 -e TF_PLUGIN_CACHE_DIR="/home/$(Home.Folder.User)/plugin-cache" -e TF_DATA_DIR="/home/$(Home.Folder.User)"
+
+pool:
+  vmImage: ubuntu-20.04
+
+stages:
+- stage: validate
+  jobs:
+  - job: validate
+    displayName: Validate
+    container: rover
+    steps:
+    - script: |
+        terraform init
+        terraform validate
+      displayName: Validate

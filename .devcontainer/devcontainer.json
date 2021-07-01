@@ -39,6 +39,7 @@
         "4ops.terraform",
         "mutantdino.resourcemonitor",
         "ms-azure-devops.azure-pipelines",
-        "omartawfik.github-actions-vscode"
+        "omartawfik.github-actions-vscode",
+        "hashicorp.terraform"
     ]
 }

@@ -2,6 +2,8 @@
 
 > Fork of [aztfmod/terraform-azurerm-caf](https://github.com/aztfmod/terraform-azurerm-caf) with additional features and capabilities that have yet to be merged into [aztfmod/terraform-azurerm-caf](https://github.com/aztfmod/terraform-azurerm-caf).
 
+[Terraform Registry: HomecareHomebase/caf](https://registry.terraform.io/modules/HomecareHomebase/caf/azurerm/latest)
+
 Microsoft [Cloud Adoption Framework for Azure](https://aka.ms/caf) provides you with guidance and best practices to adopt Azure.
 
 This module allows you to create resources on Microsoft Azure, is used by the Cloud Adoption Framework for Azure (CAF) landing zones to provision resources in an Azure subscription and can deploy resources being directly invoked from the Terraform registry.
@@ -65,3 +67,31 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+
+## Upstream Merge
+
+Initially upstream merges will be handled manually until the upstream is a little more stable. 
+
+```sh
+git remote add upstream https://github.com/aztfmod/terraform-azurerm-caf
+git fetch --all
+git checkout master
+git pull upstream master
+```
+
+## GitHub Push
+
+Changes need to be pushed to GitHub for publishing module changes out to the [Terraform Registry](https://registry.terraform.io/).
+
+```sh
+git remote add upstream https://github.com/aztfmod/terraform-azurerm-caf
+git fetch --all
+git checkout master
+git pull master
+git push upstream master
+```
+
+## Versioning Strategy
+
+Versioning of this module diverged with upstream with the tag `v100.0.0` to prevent upstream collisions and provide a clearer delineation. From `v100.0.0` the component will follow [Semantic Versioning 2.0](https://semver.org/).

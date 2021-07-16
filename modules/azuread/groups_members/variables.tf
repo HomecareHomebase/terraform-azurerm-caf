@@ -10,7 +10,6 @@ variable "azuread_apps" {
 variable "azuread_service_principals" {
   default = {}
 }
-variable settings {}
 
 variable managed_identities {
   default = {}

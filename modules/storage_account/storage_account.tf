@@ -232,24 +232,3 @@ module "file_share" {
   recovery_vault       = local.recovery_vault
   resource_group_name  = var.resource_group_name
 }
-resource "null_resource" "delay" {
-  depends_on = [azurerm_storage_account.stg]
-
-  provisioner "local-exec" {
-    command = "sleep 120"
-  }
-}
-
-resource "azurerm_resource_group_template_deployment" "blob_versioning" {
-  depends_on = [null_resource.delay]
-    
-  name                     = "${azurerm_storage_account.stg.name}-blob_versioning"
-  resource_group_name      = azurerm_storage_account.stg.resource_group_name
-  deployment_mode          = "Incremental"
-  parameters_content                = jsonencode({
-      "storageAccount"     = {value = azurerm_storage_account.stg.name}
-      "isVersioningEnabled" = {value = try(var.storage_account.enable_blob_versioning, false)}
-  })
-
-  template_content = file("${path.module}/enable_blob_versioning.json")
-}
